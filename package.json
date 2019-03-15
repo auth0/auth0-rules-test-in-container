@@ -1,13 +1,13 @@
 {
-  "name": "app",
-  "version": "1.0.0",
+  "name": "auth0-rules-test-in-container",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha tests",
     "dockerTest": "docker run --rm --name node-docker -v $PWD:/home/app -w /home/app -e \"PORT=3000\" -p 8080:3000  -u node node:8-slim npm install; npm run test"
   },
-  "author": "",
+  "author": "matt.bacalakis@auth0.com",
   "license": "ISC",
   "dependencies": {
     "auth0-rules-local-testharness": "^0.1.0",

@@ -12,7 +12,8 @@ var user = {
   family_name: "User",
   created_at: "2019-03-09T09:00.000Z",
   last_login: "2019-03-09T10:00:27.000Z",
-  logins_count: 4
+  logins_count: 4,
+  app_metadata: {}
 };
 
 var context = {
@@ -21,7 +22,8 @@ var context = {
   connection: "Test Connection",
   connectionStrategy: "auth0",
   protocol: "oidc-basic-profile",
-  stats: { loginsCount: 1 }
+  stats: { loginsCount: 1 },
+  idToken: {}
 };
 
 var configuration = {
@@ -37,7 +39,7 @@ describe("auth0-requestbin", function() {
       stats: context.stats
     }
   };
-  var script = require("fs").readFileSync("./examples/requestbin.js");
+  var script = require("fs").readFileSync("./example rules/requestbin.js");
 
   it("should post to request bin successfully", function(done) {
     nock(configuration.requestBinUrl)
@@ -63,5 +65,40 @@ describe("auth0-requestbin", function() {
     };
 
     runInLocalSandbox(script, [user, context, callback], configuration);
+  });
+});
+
+describe("add-dept-to-token", function() {
+  var script = require("fs").readFileSync(
+    "./example rules/add-dept-to-token.js"
+  );
+
+  it("should not add dept claim", function(done) {
+    var callback = function(err, response, context) {
+      expect(context.idToken["https://namespace.com/dept"]).to.be.an(
+        "undefined"
+      );
+      done();
+    };
+
+    runInLocalSandbox(script, [user, context, callback], configuration);
+  });
+
+  it("should add dept claim", function(done) {
+    user.app_metadata = {
+      department: "IT"
+    };
+
+    var callback = function(err, response, context) {
+      expect(context.idToken["https://namespace.com/dept"]).to.equal(
+        "IT",
+        "Department claim should be set to IT"
+      );
+      done();
+    };
+
+    runInLocalSandbox(script, [user, context, callback], {
+      configuration
+    });
   });
 });
