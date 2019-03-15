@@ -3,13 +3,15 @@
 The _auth0-rules-test-in-container_ library demonstrates using the [auth0-rules-local-testharness](https://github.com/auth0/auth0-rules-local-testharness) library to unit test rules in a local dev or CI environment without the need to run them in an actual webtask environment. This example runs the rules testing in a Docker Container.
 
 See here for further documentation on [Auth0 Rules](https://auth0.com/docs/rules).
+
 And here for using Docker: [Use Docker to Create a Node Development Environment](https://auth0.com/blog/use-docker-to-create-a-node-development-environment/?utm_source=dev&utm_medium=sc&utm_campaign=docker_devenv)
 
-#Prerequisites
+##Prerequisites
 A Docker account, free tier is fine.
+
 [Install Docker](https://www.docker.com/products/docker-desktop)
 
-#Running Tests
+##Running Tests
 This example has a few sample rules in the **example rules ** folder and sample tests in the **tests** folder. To run the tests simply execute
 
 ```
