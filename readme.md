@@ -7,12 +7,13 @@ See here for further documentation on [Auth0 Rules](https://auth0.com/docs/rules
 And here for using Docker: [Use Docker to Create a Node Development Environment](https://auth0.com/blog/use-docker-to-create-a-node-development-environment/?utm_source=dev&utm_medium=sc&utm_campaign=docker_devenv)
 
 ##Prerequisites
-A Docker account, free tier is fine.
 
+A Docker account, free tier is fine.
 [Install Docker](https://www.docker.com/products/docker-desktop)
 
 ##Running Tests
-This example has a few sample rules in the **example rules ** folder and sample tests in the **tests** folder. To run the tests simply execute
+
+This example has a few sample rules in the **example rules** folder and sample tests in the **tests** folder. To run the tests simply execute
 
 ```
 npm run dockerTest
