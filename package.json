@@ -9,8 +9,10 @@
   },
   "author": "matt.bacalakis@auth0.com",
   "license": "ISC",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "auth0-rules-local-testharness": "^0.1.0",
+    "clone": "^2.1.2",
     "mocha": "^6.0.2",
     "nock": "^10.0.6"
   }

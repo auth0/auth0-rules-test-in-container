@@ -3,20 +3,21 @@
 var expect = require("chai").expect;
 var runInLocalSandbox = require("auth0-rules-local-testharness");
 var nock = require("nock");
+var clone = require("clone");
 
-var user = {
+var defaultUser = {
   email: "first.last@auth0.com",
   email_verified: true,
-  name: "Test user",
+  name: "Test defaultUser",
   given_name: "Test",
-  family_name: "User",
+  family_name: "defaultUser",
   created_at: "2019-03-09T09:00.000Z",
   last_login: "2019-03-09T10:00:27.000Z",
   logins_count: 4,
   app_metadata: {}
 };
 
-var context = {
+var defaultContext = {
   clientID: "test-client-id",
   clientName: "Test client",
   connection: "Test Connection",
@@ -32,16 +33,22 @@ var configuration = {
 
 describe("auth0-requestbin", function() {
   var body = {
-    user: { email: user.email, email_verified: user.email_verified },
+    user: {
+      email: defaultUser.email,
+      email_verified: defaultUser.email_verified
+    },
     context: {
-      clientID: context.clientID,
-      connection: context.connection,
-      stats: context.stats
+      clientID: defaultContext.clientID,
+      connection: defaultContext.connection,
+      stats: defaultContext.stats
     }
   };
   var script = require("fs").readFileSync("./example rules/requestbin.js");
 
   it("should post to request bin successfully", function(done) {
+    var user = clone(defaultUser);
+    var context = clone(defaultContext);
+
     nock(configuration.requestBinUrl)
       .post("", body)
       .reply(200);
@@ -55,6 +62,9 @@ describe("auth0-requestbin", function() {
   });
 
   it("should fail to post to request bin", function(done) {
+    var user = clone(defaultUser);
+    var context = clone(defaultContext);
+
     nock(configuration.requestBinUrl)
       .post("", body)
       .reply(500);
@@ -73,18 +83,10 @@ describe("add-dept-to-token", function() {
     "./example rules/add-dept-to-token.js"
   );
 
-  it("should not add dept claim", function(done) {
-    var callback = function(err, response, context) {
-      expect(context.idToken["https://namespace.com/dept"]).to.be.an(
-        "undefined"
-      );
-      done();
-    };
-
-    runInLocalSandbox(script, [user, context, callback], configuration);
-  });
-
   it("should add dept claim", function(done) {
+    var user = clone(defaultUser);
+    var context = clone(defaultContext);
+
     user.app_metadata = {
       department: "IT"
     };
@@ -100,5 +102,19 @@ describe("add-dept-to-token", function() {
     runInLocalSandbox(script, [user, context, callback], {
       configuration
     });
+  });
+
+  it("should not add dept claim", function(done) {
+    var user = clone(defaultUser);
+    var context = clone(defaultContext);
+
+    var callback = function(err, response, context) {
+      expect(context.idToken["https://namespace.com/dept"]).to.be.an(
+        "undefined"
+      );
+      done();
+    };
+
+    runInLocalSandbox(script, [user, context, callback], configuration);
   });
 });
