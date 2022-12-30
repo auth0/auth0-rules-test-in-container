@@ -13,7 +13,7 @@
   "devDependencies": {
     "auth0-rules-local-testharness": "^0.1.0",
     "clone": "^2.1.2",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "nock": "^10.0.6"
   }
 }
